@@ -1,0 +1,19 @@
+{
+  "name": "day3-project",
+  "version": "1.0.0",
+  "description": "A project for andelaBootCamp Day3",
+  "main": "app/library.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Okoro Celestine - okorocelestine@gmail.com",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celelstine/andelaBootCampDay3"
+  },
+  
+  "dependencies": {
+    "jasmine": "^2.5.2"
+  }
+}
