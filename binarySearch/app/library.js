@@ -1,92 +1,117 @@
-/**
- * A class to extend the Array class and implement the binary search algorithm
- * @Author okorocelstine@gmail.com (Okoro Celestine)
- */
-'use strict'
+(function(){
 
-var MyArray =function() { 
-
-  // function to return the array [1,2,3,...,20]
-  Array.prototype.toTwenty= function() {
-        var series =[],
-            lastTerm = 20,
-            currentNumber =1;
-        while (currentNumber <= lastTerm ) {
-          series.push(currentNumber);
-          currentNumber++;
-        }
-        return series
-
-    }
+  'use strict';
+  require('../app/library.js');
+  describe('Binary Search to traverse an ordered list, effectively', function() {
+  describe('Populate the arrays with valid content', function() {
     
-  // function to return the array [2,4,6,...,40]
-  Array.prototype.toForty= function() {
-        var series =[],
-            lastTerm = 40,
-            currentNumber =2;
-        while (currentNumber <= lastTerm ) {
-          series.push(currentNumber);
-          currentNumber += 2;
-        }
-        return series
-    }
+    it('should create an array from 1 to 20, with intervals of 1', function() {
+      expect(oneToTwenty[0]).toBe(1);
+      expect(oneToTwenty[19]).toBe(20);
+      expect(oneToTwenty.length).toBe(20);
+      for(var i = 0; i < oneToTwenty.length - 1;i++) {
+        expect(oneToTwenty[i + 1] - oneToTwenty[i]).toBe(1);
+      }
+    });
 
-  // function to return the array [10,20,30,...,1000]
-  Array.prototype.toOneThousand= function() {
-        var series =[],
-            lastTerm = 1000,
-            currentNumber =10;
-        while (currentNumber <= lastTerm ) {
-          series.push(currentNumber);
-          currentNumber += 10;
-        }
-        return series
-    }
+    it('should create an array from 2 to 40, with intervals of 2', function() {
+      expect(twoToForty[0]).toBe(2);
+      expect(twoToForty[19]).toBe(40);
+      expect(twoToForty.length).toBe(20);
+      for(var i = 0; i < twoToForty.length - 1;i++) {
+        expect(twoToForty[i + 1] - twoToForty[i]).toBe(2);
+      }
+    });
 
-    // Function to search for a number in an array using binary search
-    Array.prototype.search= function(searchNum) {
-           var count = 0,
-              length = this.length,
-              index = 0,
-              startIndex = 0,
-              stopIndex = length - 1,
-              // store the fraction of the searchNUm to the largest number in the array
-              fractionOfLastTerm = searchNum/ this[length-1];
-              // return 9 for 9.5 
-              wholeNum = Math.floor(fractionOfLastTerm * (length-1));
-              fractionNUm =fractionOfLastTerm * (length-1);
-              middle = ( wholeNum > fractionNUm) ? wholeNum-1:wholeNum;
-       //var middle = fractionOfLastTerm * (length-1);
-      // return middle;
+    it('should create an array from 10 to 10000, with intervals of 10', function() {
+      expect(tenToOneThousand[0]).toBe(10);
+      expect(tenToOneThousand[99]).toBe(1000);
+      expect(tenToOneThousand.length).toBe(100);
+      for(var i = 0; i < tenToOneThousand.length - 1;i++) {
+        expect(tenToOneThousand[i + 1] - tenToOneThousand[i]).toBe(10);
+      }
+    });
+  });
 
-       while(this[middle] != searchNum && startIndex < stopIndex) {
+  describe('Get the index of the item with an expected number of loops in array [1, 2 . . . 20]', function() {
 
-                //adjust search area
-                if (searchNum < this[middle]){
-                    stopIndex = middle - 1;
-                } else if (searchNum > this[middle]){
-                    startIndex = middle + 1;
-                }
+    it('should return {count: /* <= 4 */, index: 15} for 16', function() {
+      var search  = oneToTwenty.search(16);
+      expect(search.count).toBeLessThan(5);
+      expect(search.index).toBe(15);
+    });
 
-                //recalculate middle
-                middle = Math.floor((stopIndex + startIndex)/2);
-                count++;
-            }
+    it('should return {count: < /* array length */, index: -1} for 33 ', function () {
+      var search = oneToTwenty.search(33);
+      expect(search.count).toBeLessThan(search.length);
+      expect(search.index).toBe(-1);
+    });
+  });
 
-            //check if the num exists in the array, if not return -1
-              index =  (this[middle] != searchNum) ? -1 : middle;
-       var result = {
-            count : count,
-            index : index,
-            length : length
-          };
-          return result;
-    
+  
+  it('should not contain any form of `indexOf` in the search function', function() {
+    expect(Array.prototype.search.toString().indexOf('indexOf')).toBe(-1);      
+  });
+  
+  describe('Get the index of the item with an expected number of loops in array [2, 4 . . . 40]', function() {
 
-    }
+    it('should return {count: /* <= 4 */, index: 15} for 16', function() {
+      var search  = twoToForty.search(16);
+      expect(search.count).toBeLessThan(5);
+      expect(search.index).toBe(7);
+    });
+    /////
+    it('should return {count: 0, index: 9} for 20', function() {
+      var search  = twoToForty.search(20);
+      expect(search.count).toBe(0);
+      expect(search.index).toBe(9);
+    });
 
 
-}();
+    it('should return {count: 0, index: 19} for 40', function() {
+      var search  = twoToForty.search(40);
+      expect(search.count).toBe(0);
+      expect(search.index).toBe(19);
+    });
 
-module.exports = MyArray;
+    it('should return {count: < /* array length */, index: -1} for 33 ', function () {
+      var search = twoToForty.search(33);
+      expect(search.count).toBeLessThan(search.length);
+      expect(search.index).toBe(-1);
+    });
+  });
 
+  describe('Get the index of the item with an expected number of loops in array [10, 20 . . . 1000]', function() {
+
+    it('should return {count: /* <= 3 */, index: 3} for 40', function() {
+      var search  = tenToOneThousand.search(40);
+      expect(search.count).toBeLessThan(4);
+      expect(search.index).toBe(3);
+    });
+
+    it('should return {count: /* <= 5*/, index: 87} for 800', function() {
+      var search  = tenToOneThousand.search(880);
+      expect(search.count).toBeLessThan(6);
+      expect(search.index).toBe(87);
+    });
+
+    it('should return {count: < /* array length */, index: -1} for 10000 ', function () {
+      var search = tenToOneThousand.search(10000);
+      expect(search.count).toBeLessThan(search.length);
+      expect(search.index).toBe(-1);
+    });
+
+  });
+});
+
+/*
+* Block the indexOf Array function
+*/
+Array.prototype.indexOf = function () {
+  throw new Error('You are not allowed to use the indexOf function');
+};
+var oneToTwenty = [].toTwenty();
+var twoToForty = [].toForty();
+var tenToOneThousand = [].toOneThousand();
+
+})();
