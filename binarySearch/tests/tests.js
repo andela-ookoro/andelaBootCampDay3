@@ -1,7 +1,7 @@
 (function(){
 
   'use strict';
-  var myCarAttempt = require('../app/library.js');
+  require('../app/library.js');
   describe('Binary Search to traverse an ordered list, effectively', function() {
     describe('Populate the arrays with valid content', function() {
       
