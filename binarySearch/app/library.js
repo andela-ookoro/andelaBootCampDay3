@@ -45,37 +45,44 @@ var MyArray =function() {
 
     // Function to search for a number in an array using binary search
     Array.prototype.search= function(searchNum) {
-          var count = 0,
+           var count = 0,
               length = this.length,
               index = 0,
               startIndex = 0,
               stopIndex = length - 1,
-              middle = Math.floor((stopIndex + startIndex)/2);
+              // store the fraction of the searchNUm to the largest number in the array
+              fractionOfLastTerm = searchNum/ this[length-1];
+              // return 9 for 9.5 
+              wholeNum = Math.floor(fractionOfLastTerm * (length-1));
+              fractionNUm =fractionOfLastTerm * (length-1);
+              middle = ( wholeNum > fractionNUm) ? wholeNum-1:wholeNum;
+       //var middle = fractionOfLastTerm * (length-1);
+      // return middle;
 
+       while(this[middle] != searchNum && startIndex < stopIndex) {
 
-          while(this[middle] != searchNum && startIndex < stopIndex){
+                //adjust search area
+                if (searchNum < this[middle]){
+                    stopIndex = middle - 1;
+                } else if (searchNum > this[middle]){
+                    startIndex = middle + 1;
+                }
 
-              //adjust search area
-              if (searchNum < this[middle]){
-                  stopIndex = middle - 1;
-              } else if (searchNum > this[middle]){
-                  startIndex = middle + 1;
-              }
+                //recalculate middle
+                middle = Math.floor((stopIndex + startIndex)/2);
+                count++;
+            }
 
-              //recalculate middle
-              middle = Math.floor((stopIndex + startIndex)/2);
-              count++;
-          }
-
-          //check if the num exists in the array, if not return -1
-          index =  (this[middle] != searchNum) ? -1 : middle;
-
-          var result = {
+            //check if the num exists in the array, if not return -1
+              index =  (this[middle] != searchNum) ? -1 : middle;
+       var result = {
             count : count,
             index : index,
             length : length
           };
           return result;
+    
+
     }
 
 
